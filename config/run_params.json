@@ -3,5 +3,7 @@
   "CONFIG_DIR": "../config/",
   "LOGGER_CONFIG": "../config/logger.conf",
   "DB_SERVER": "localhost",
-  "DB_PORT": "5432"
+  "DB_PORT": "5432",
+  "DB_NAME": "dvdrental",
+  "DB_USER": "dvdrental"
 }
