@@ -5,6 +5,7 @@ RUN_PARAMS_DEFAULT_FILENM = 'run_params.json'
 run_conf_data = {}
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+
 def set_run_config_map(run_config_file):
     global run_conf_data
     try:
@@ -14,6 +15,7 @@ def set_run_config_map(run_config_file):
         print(err)
         return (1)
     return (0)
+
 
 def get_db_con_str():
     # Example: 'postgresql://scott:tiger@localhost:5432/mydatabase'
@@ -36,5 +38,3 @@ def get_db_con_str():
                  f'{run_conf_data["DB_NAME"]}'
     os.environ['SQLALCHEMY_DATABASE_URI'] = db_con_str
     return db_con_str
-
-
