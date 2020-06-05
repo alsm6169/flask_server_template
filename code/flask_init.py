@@ -6,9 +6,6 @@ db_obj = SQLAlchemy()
 def create_app():
     """Construct the core application."""
     app = Flask(__name__, instance_relative_config=False)
-    # Moved this to flask_config.py, delete it in next commit
-    # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    # app.config['SQLALCHEMY_ECHO'] = False
 
     '''
     Code line --> 
