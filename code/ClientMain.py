@@ -21,8 +21,8 @@ if res.status_code == 200:
 else:
     print('status_code: ', res.status_code, ', status_msg: ', res.text)
 
-#res = requests.get('http://127.0.0.1:5000/module/v01/functions/actor_list_alchemy_json')
-#print('status_code: ', res.status_code, ', status_msg: ', res.text)
+# res = requests.get('http://127.0.0.1:5000/module/v01/functions/actor_list_alchemy_json')
+# print('status_code: ', res.status_code, ', status_msg: ', res.text)
 
 res = requests.get('http://127.0.0.1:5000/module/v01/functions/film_info_rawsql_df?title=Ali Forever')
 if res.status_code == 200:
