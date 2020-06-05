@@ -64,3 +64,15 @@ def get_film_info_rawsql_df():
         response_code = 700 # err.code
         response_msg = jsonify(str(err))
     return make_response(response_msg, response_code)
+
+@app.route('/module/v01/functions/film_actors_rawsql_df', methods=['GET'])
+def get_film_actors_rawsql_df():
+    try:
+        print('inside get_film_actors_rawsql_df')
+        actor_df = db_queries.get_film_actors(request)
+        response_code = 200
+        response_msg = actor_df.to_json(orient='records')
+    except RuntimeError as err:
+        response_code = 700 # err.code
+        response_msg = jsonify(str(err))
+    return make_response(response_msg, response_code)
