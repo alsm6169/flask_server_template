@@ -1,6 +1,5 @@
 from flask import jsonify, make_response, request
 from flask import current_app as app
-from marshmallow import ValidationError
 
 import db_queries
 
