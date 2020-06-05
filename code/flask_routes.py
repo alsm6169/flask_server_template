@@ -23,12 +23,9 @@ def get_actor_list_alchemy_df():
         actor_df = db_queries.get_all_actors_df()
         response_code = 200
         response_msg = actor_df.to_json(orient='records')
-    except ValidationError as err:
-        response_code = err.code
-        response_msg = jsonify(err.messages)
     except RuntimeError as err:
-        response_code = err.code
-        response_msg = jsonify(err.messages)
+        response_code = 700  # err.code
+        response_msg = jsonify(str(err))
     return make_response(response_msg, response_code)
 
 
@@ -40,12 +37,9 @@ def get_actor_list_alchemy_json():
         response_code = 200
         # response_msg = jsonify({'STATUS' : 'WORKED INTERNALLY'})
         response_msg = jsonify(actors)
-    except ValidationError as err:
-        response_code = err.code
-        response_msg = jsonify(err.messages)
     except RuntimeError as err:
-        response_code = err.code
-        response_msg = jsonify(err.messages)
+        response_code = 700  # err.code
+        response_msg = jsonify(str(err))
     return make_response(response_msg, response_code)
 
 @app.route('/module/v01/functions/film_list_rawsql_df', methods=['GET'])
@@ -55,25 +49,19 @@ def get_film_list_rawsql_df():
         actor_df = db_queries.get_all_film_df()
         response_code = 200
         response_msg = actor_df.to_json(orient='records')
-    except ValidationError as err:
-        response_code = err.code
-        response_msg = jsonify(err.messages)
     except RuntimeError as err:
-        response_code = err.code
-        response_msg = jsonify(err.messages)
+        response_code = 700  # err.code
+        response_msg = jsonify(str(err))
     return make_response(response_msg, response_code)
 
-@app.route('/module/v01/functions/film_actor_rawsql_df', methods=['GET'])
-def get_film_actors_rawsql_df():
+@app.route('/module/v01/functions/film_info_rawsql_df', methods=['GET'])
+def get_film_info_rawsql_df():
     try:
-        print('inside get_film_actors_rawsql_df')
-        actor_df = db_queries.get_film_actors_df(request.args)
+        print('inside get_film_info_rawsql_df')
+        actor_df = db_queries.get_film_info_df(request)
         response_code = 200
         response_msg = actor_df.to_json(orient='records')
-    except ValidationError as err:
-        response_code = err.code
-        response_msg = jsonify(err.messages)
     except RuntimeError as err:
-        response_code = err.code
-        response_msg = jsonify(err.messages)
+        response_code = 700 # err.code
+        response_msg = jsonify(str(err))
     return make_response(response_msg, response_code)
