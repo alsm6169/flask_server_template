@@ -26,18 +26,12 @@ db_con_str = main_config.get_db_con_str()
 # initialize the logger
 logging.config.fileConfig(main_config.run_conf_data['LOGGER_CONFIG'])
 log = logging.getLogger('pythonLogger') # This handler comes from config>logger.conf
-# f_handler = logging.FileHandler('../logs/file.log')
-# f_format = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-# f_handler.setFormatter(f_format)
-# log.addHandler(f_handler)
-
 log.debug('sys.version: ' + sys.version)
 log.info('__name__: ' + __name__)
+
 # Flask Code - BEGIN
 """App entry point."""
-
 app = create_app()
-
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
 # Flask Code - END
