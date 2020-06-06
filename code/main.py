@@ -1,6 +1,7 @@
 import platform
 import sys
 from pathlib import Path
+import logging.config
 
 import main_config
 from flask_init import create_app
@@ -11,8 +12,6 @@ from flask_init import create_app
 
 # Main - START
 print('platform.python_version(): ', platform.python_version())
-print('sys.version: ', sys.version)
-print('__name__: ', __name__)
 
 if len(sys.argv) != 2:
     run_config_file = Path('../config/') / main_config.RUN_PARAMS_DEFAULT_FILENM
@@ -23,8 +22,17 @@ if main_config.set_run_config_map(run_config_file) == 1:
     print('unable to read configuration file, exiting')
     exit(1)
 db_con_str = main_config.get_db_con_str()
-# print('main_config.get_db_con_str(): ', db_con_str)
 
+# initialize the logger
+logging.config.fileConfig(main_config.run_conf_data['LOGGER_CONFIG'])
+log = logging.getLogger('pythonLogger') # This handler comes from config>logger.conf
+# f_handler = logging.FileHandler('../logs/file.log')
+# f_format = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+# f_handler.setFormatter(f_format)
+# log.addHandler(f_handler)
+
+log.debug('sys.version: ' + sys.version)
+log.info('__name__: ' + __name__)
 # Flask Code - BEGIN
 """App entry point."""
 

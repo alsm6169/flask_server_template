@@ -1,6 +1,10 @@
 from flask import jsonify, make_response, request
 from flask import current_app as app
 
+import logging
+# log = logging.getLogger(__name__)
+log = logging.getLogger('pythonLogger') # This handler comes from config>logger.conf
+
 import db_queries
 
 
@@ -18,7 +22,7 @@ def bad_request():
 @app.route('/module/v01/functions/film_list', methods=['GET'])
 def get_film_list():
     try:
-        print('inside get_film_list')
+        log.debug('inside get_film_list')
         actor_df = db_queries.get_all_films()
         response_code = 200
         response_msg = actor_df.to_json(orient='records')
@@ -30,7 +34,7 @@ def get_film_list():
 @app.route('/module/v01/functions/film_info', methods=['GET'])
 def get_film_info():
     try:
-        print('inside get_film_info')
+        log.debug('inside get_film_info')
         actor_df = db_queries.get_film_info(request)
         response_code = 200
         response_msg = actor_df.to_json(orient='records')
@@ -42,7 +46,7 @@ def get_film_info():
 @app.route('/module/v01/functions/film_actors', methods=['GET'])
 def get_film_actors():
     try:
-        print('inside get_film_actors')
+        log.debug('inside get_film_actors')
         actor_df = db_queries.get_film_actors(request)
         response_code = 200
         response_msg = actor_df.to_json(orient='records')

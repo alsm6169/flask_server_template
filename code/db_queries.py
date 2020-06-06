@@ -1,21 +1,24 @@
 import psycopg2
 import pandas as pd
 from marshmallow import Schema, fields, validates, validate, post_load, ValidationError
-
+import logging
 from flask_init import db_obj
+
+log = logging.getLogger('pythonLogger') # This handler comes from config>logger.conf
 
 def get_all_films():
     try:
         query = '''
         SELECT * FROM film
         '''
+        log.debug(query)
         film_df = pd.read_sql(query, db_obj.session.bind)
         return film_df
     except psycopg2.DatabaseError as error:
-        print(f'get_all_film_df: {error.pgcode}, {error}')
+        log.error(f'get_all_film_df: {error.pgcode}, {error}')
         raise RuntimeError('DB Processing Error: ' + str(error))
     except ValidationError as error:
-        print(f'get_all_film_df: {error}')
+        log.error(f'get_all_film_df: {error}')
         raise RuntimeError('Invalid Request Parameter: ' + str(error))
 
 
@@ -40,13 +43,14 @@ def get_film_info(request):
         SELECT * FROM film
         WHERE title = %(title)s
         '''
+        log.debug(query)
         actor_df = pd.read_sql(sql=query, params={'title': title}, con=db_obj.session.bind)
         return actor_df
     except psycopg2.DatabaseError as error:
-        print(f'get_all_film_df: {error.pgcode}, {error}')
+        log.error(f'get_all_film_df: {error.pgcode}, {error}')
         raise RuntimeError('DB Processing Error: ' + str(error))
     except ValidationError as error:
-        print(f'get_all_film_df: {error}')
+        log.error(f'get_all_film_df: {error}')
         raise RuntimeError('Invalid Request Parameter: ' + str(error))
 
 
@@ -63,11 +67,12 @@ def get_film_actors(request):
         INNER JOIN film f on f.film_id = fa.film_id 
         WHERE f.title = %(title)s
         '''
+        log.debug(query)
         actor_df = pd.read_sql(sql=query, params={'title': title}, con=db_obj.session.bind)
         return actor_df
     except psycopg2.DatabaseError as error:
-        print(f'get_all_film_df: {error.pgcode}, {error}')
+        log.error(f'get_all_film_df: {error.pgcode}, {error}')
         raise RuntimeError('DB Processing Error: ' + str(error))
     except ValidationError as error:
-        print(f'get_all_film_df: {error}')
+        log.error(f'get_all_film_df: {error}')
         raise RuntimeError('Invalid Request Parameter: ' + str(error))
