@@ -11,7 +11,7 @@ def get_all_films():
         query = '''
         SELECT * FROM film
         '''
-        log.debug(query)
+        log.debug('query> ' + query)
         film_df = pd.read_sql(query, db_obj.session.bind)
         return film_df
     except psycopg2.DatabaseError as error:
@@ -31,7 +31,8 @@ def get_film_info(request):
         SELECT * FROM film
         WHERE title = %(title)s
         '''
-        log.debug(query)
+
+        log.debug('query> ' + query)
         actor_df = pd.read_sql(sql=query, params={'title': title}, con=db_obj.session.bind)
         return actor_df
     except psycopg2.DatabaseError as error:
@@ -55,7 +56,7 @@ def get_film_actors(request):
         INNER JOIN film f on f.film_id = fa.film_id 
         WHERE f.title = %(title)s
         '''
-        log.debug(query)
+        log.debug('query> ' + query)
         actor_df = pd.read_sql(sql=query, params={'title': title}, con=db_obj.session.bind)
         return actor_df
     except psycopg2.DatabaseError as error:

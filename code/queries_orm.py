@@ -18,6 +18,7 @@ def get_all_films():
         # for r in result_set:
         #     print(r.title)
         qry = db_obj.session.query(film_orm)
+        log.debug('query> ' + str(qry.statement))
         film_df = pd.read_sql(qry.statement, db_obj.session.bind)
         return film_df
     except psycopg2.DatabaseError as error:
@@ -34,6 +35,7 @@ def get_film_info(request):
         film_orm = Base.classes.film
         qry = db_obj.session.query(film_orm).\
             filter(film_orm.title == title)
+        log.debug('query> ' + str(qry.statement))
         film_df = pd.read_sql(qry.statement, db_obj.session.bind)
         return film_df
     except psycopg2.DatabaseError as error:
@@ -58,6 +60,7 @@ def get_film_actors(request):
         qry = db_obj.session.query(actor_orm).\
             join(film_actor_orm,film_orm).\
             filter(film_orm.title == title)
+        log.debug('query> ' + str(qry.statement))
         actor_df = pd.read_sql(qry.statement, db_obj.session.bind)
         return actor_df
     except psycopg2.DatabaseError as error:
