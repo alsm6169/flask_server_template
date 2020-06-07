@@ -35,3 +35,4 @@ class TitleValidator(Schema):
     '''https://marshmallow.readthedocs.io/en/stable/marshmallow.validate.html'''
     title = fields.Str(required=True, validate=[validate.Length(min=1, max=50), some_custom_check])
 
+

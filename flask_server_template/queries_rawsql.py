@@ -24,7 +24,7 @@ def get_film_info(request):
     try:
         title_schema_obj = TitleValidator()
         title_schema_obj.load(request.args)
-        # verification passed, hence code comes here else it would have gone to exception
+        # verification passed, hence flask_server_template comes here else it would have gone to exception
         title = request.args['title']
 
         query = '''
@@ -32,7 +32,7 @@ def get_film_info(request):
         WHERE title = %(title)s
         '''
 
-        log.debug('query> ' + query)
+        log.debug('query> ' + query + ', title> ' + title)
         actor_df = pd.read_sql(sql=query, params={'title': title}, con=db_obj.session.bind)
         return actor_df
     except psycopg2.DatabaseError as error:
@@ -47,7 +47,7 @@ def get_film_actors(request):
     try:
         title_schema_obj = TitleValidator()
         title_schema_obj.load(request.args)
-        # verification passed, hence code comes here else it would have gone to exception
+        # verification passed, hence flask_server_template comes here else it would have gone to exception
         title = request.args['title']
 
         query = '''
@@ -56,7 +56,7 @@ def get_film_actors(request):
         INNER JOIN film f on f.film_id = fa.film_id 
         WHERE f.title = %(title)s
         '''
-        log.debug('query> ' + query)
+        log.debug('query> ' + query + ', title> ' + title)
         actor_df = pd.read_sql(sql=query, params={'title': title}, con=db_obj.session.bind)
         return actor_df
     except psycopg2.DatabaseError as error:

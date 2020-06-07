@@ -1,7 +1,5 @@
 {
-  "OUTPUT_DIR": "../output/",
-  "CONFIG_DIR": "../config/",
-  "LOGGER_CONFIG": "../config/logger.conf",
+  "LOGGER_CONFIG": "config/logger.conf",
   "FLASK_CONFIG": "flask_config.DevelopmentConfig",
   "DB_SERVER": "localhost",
   "DB_PORT": "5432",

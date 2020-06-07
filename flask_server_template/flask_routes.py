@@ -32,7 +32,7 @@ def get_film_list():
         response_code = 200
         response_msg = df.to_json(orient='records')
     except RuntimeError as err:
-        response_code = 700  # err.code
+        response_code = 700  # err.flask_server_template
         response_msg = jsonify(str(err))
     return make_response(response_msg, response_code)
 
@@ -45,7 +45,7 @@ def get_film_info():
         response_code = 200
         response_msg = df.to_json(orient='records')
     except RuntimeError as err:
-        response_code = 700  # err.code
+        response_code = 700  # err.flask_server_template
         response_msg = jsonify(str(err))
     return make_response(response_msg, response_code)
 
@@ -58,7 +58,7 @@ def get_film_actors():
         response_code = 200
         response_msg = actor_df.to_json(orient='records')
     except RuntimeError as err:
-        response_code = 700  # err.code
+        response_code = 700  # err.flask_server_template
         response_msg = jsonify(str(err))
     return make_response(response_msg, response_code)
 
@@ -74,7 +74,7 @@ def get_film_list_orm():
         response_msg = film_df.to_json(orient='index')
         # response_msg = jsonify({'Status': 'All good!'})
     except RuntimeError as err:
-        response_code = 700  # err.code
+        response_code = 700  # err.flask_server_template
         response_msg = jsonify(str(err))
     return make_response(response_msg, response_code)
 
@@ -86,7 +86,7 @@ def get_film_info_orm():
         response_code = 200
         response_msg = film_df.to_json(orient='index')
     except RuntimeError as err:
-        response_code = 700  # err.code
+        response_code = 700  # err.flask_server_template
         response_msg = jsonify(str(err))
     return make_response(response_msg, response_code)
 
@@ -99,7 +99,7 @@ def get_film_actors_orm():
         response_code = 200
         response_msg = actor_df.to_json(orient='index')
     except RuntimeError as err:
-        response_code = 700  # err.code
+        response_code = 700  # err.flask_server_template
         response_msg = jsonify(str(err))
     return make_response(response_msg, response_code)
 '''ORM Object based queries - END'''

@@ -30,12 +30,12 @@ def get_film_info(request):
     try:
         title_schema_obj = TitleValidator()
         title_schema_obj.load(request.args)
-        # verification passed, hence code comes here else it would have gone to exception
+        # verification passed, hence flask_server_template comes here else it would have gone to exception
         title = request.args['title']
         film_orm = Base.classes.film
         qry = db_obj.session.query(film_orm).\
             filter(film_orm.title == title)
-        log.debug('query> ' + str(qry.statement))
+        log.debug('query> ' + str(qry.statement) + ', title> ' + title)
         film_df = pd.read_sql(qry.statement, db_obj.session.bind)
         return film_df
     except psycopg2.DatabaseError as error:
@@ -50,8 +50,9 @@ def get_film_actors(request):
     try:
         title_schema_obj = TitleValidator()
         title_schema_obj.load(request.args)
-        # verification passed, hence code comes here else it would have gone to exception
+        # verification passed, hence flask_server_template comes here else it would have gone to exception
         title = request.args['title']
+        log.debug('title: ' + title)
         film_orm = Base.classes.film
         actor_orm = Base.classes.actor
         film_actor_orm = Base.classes.film_actor
@@ -60,7 +61,7 @@ def get_film_actors(request):
         qry = db_obj.session.query(actor_orm).\
             join(film_actor_orm,film_orm).\
             filter(film_orm.title == title)
-        log.debug('query> ' + str(qry.statement))
+        log.debug('query> ' + str(qry.statement) + ', title> ' + title)
         actor_df = pd.read_sql(qry.statement, db_obj.session.bind)
         return actor_df
     except psycopg2.DatabaseError as error:
