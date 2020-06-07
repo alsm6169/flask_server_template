@@ -1,4 +1,4 @@
-# flask_server_framework
+# flask_server_template
 Flask Server with sample code including logger and DB connection
 
 
