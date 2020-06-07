@@ -4,8 +4,7 @@ import logging
 import pandas as pd
 from marshmallow import ValidationError
 
-from flask_init import db_obj
-from queries_rawsql import TitleSchema # TODO: to be moved to a common module
+from flask_init import db_obj, TitleValidator
 
 log = logging.getLogger('pythonLogger') # This handler comes from config>logger.conf
 # https://www.youtube.com/watch?v=UK57IHzSh8I
@@ -28,7 +27,7 @@ def get_all_films():
 
 def get_film_info(request):
     try:
-        title_schema_obj = TitleSchema()
+        title_schema_obj = TitleValidator()
         title_schema_obj.load(request.args)
         # verification passed, hence code comes here else it would have gone to exception
         title = request.args['title']
@@ -47,7 +46,7 @@ def get_film_info(request):
 
 def get_film_actors(request):
     try:
-        title_schema_obj = TitleSchema()
+        title_schema_obj = TitleValidator()
         title_schema_obj.load(request.args)
         # verification passed, hence code comes here else it would have gone to exception
         title = request.args['title']
