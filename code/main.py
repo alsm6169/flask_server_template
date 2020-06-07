@@ -31,7 +31,7 @@ log.info('__name__: ' + __name__)
 
 # Flask Code - BEGIN
 """App entry point."""
-app = create_app()
+app = create_app(main_config.run_conf_data['FLASK_CONFIG'])
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
 # Flask Code - END

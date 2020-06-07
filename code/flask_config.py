@@ -1,4 +1,5 @@
 import os
+# https://hackersandslackers.com/configure-flask-applications
 
 
 class Config(object):

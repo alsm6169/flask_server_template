@@ -9,6 +9,7 @@ log = logging.getLogger('pythonLogger')  # This handler comes from config>logger
 import queries_rawsql
 import queries_orm
 
+# https://hackersandslackers.com/flask-routes
 
 @app.errorhandler(404)
 def not_found(error):
