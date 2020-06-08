@@ -1,5 +1,5 @@
 flask_server_template/__pycache__
 logs/
-output/
-input/
 .idea/
+*.pyc
+__pycache__/

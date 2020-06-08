@@ -4,11 +4,11 @@ from pathlib import Path
 import logging.config
 
 import main_config
-from flask_init import create_app
+from flask_server_template import create_app
 
-# Global Initialization - BEGIN
+# Global Variable Initialization - BEGIN
 
-# Global Initialization - END
+# Global Variable Initialization - END
 
 # Main - START
 print('platform.python_version(): ', platform.python_version())

@@ -4,7 +4,7 @@ import logging
 import pandas as pd
 from marshmallow import ValidationError
 
-from flask_init import db_obj, TitleValidator
+from flask_server_template import db_obj, TitleValidator
 
 log = logging.getLogger('pythonLogger') # This handler comes from config>logger.conf
 # https://www.youtube.com/watch?v=UK57IHzSh8I

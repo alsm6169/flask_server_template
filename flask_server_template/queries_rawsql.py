@@ -2,7 +2,7 @@ import psycopg2
 import pandas as pd
 from marshmallow import ValidationError
 import logging
-from flask_init import db_obj, TitleValidator
+from flask_server_template import db_obj, TitleValidator
 
 log = logging.getLogger('pythonLogger') # This handler comes from config>logger.conf
 
