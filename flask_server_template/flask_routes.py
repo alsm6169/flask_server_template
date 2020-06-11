@@ -1,13 +1,14 @@
 from flask import jsonify, make_response, request, Blueprint
 
 import logging
+
+import db.db_extensions
+
 log = logging.getLogger('pythonLogger')  # This handler comes from config>logger.conf
 
 routes = Blueprint('flask_routes',__name__)
 from db import queries_orm, queries_rawsql
 
-
-# https://hackersandslackers.com/flask-routes
 
 @routes.before_app_first_request
 def orm_init():
@@ -16,7 +17,7 @@ def orm_init():
     Fired before the first HTTP request (to any part of the site).
 
     """
-    queries_orm.orm_init()
+    db.db_extensions.orm_init()
 
 @routes.errorhandler(404)
 def not_found(error):
