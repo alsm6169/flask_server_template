@@ -1,30 +1,37 @@
-from flask import jsonify, make_response, request
-from flask import current_app as app
+from flask import jsonify, make_response, request, Blueprint
 
 import logging
-
-# log = logging.getLogger(__name__)
 log = logging.getLogger('pythonLogger')  # This handler comes from config>logger.conf
 
-import queries_rawsql
-import queries_orm
+routes = Blueprint('flask_routes',__name__)
+from db import queries_orm, queries_rawsql
+
 
 # https://hackersandslackers.com/flask-routes
 
-@app.errorhandler(404)
+@routes.before_app_first_request
+def orm_init():
+    """Creates the database reflection
+
+    Fired before the first HTTP request (to any part of the site).
+
+    """
+    queries_orm.orm_init()
+
+@routes.errorhandler(404)
 def not_found(error):
     """Page not found."""
     return make_response(jsonify({'Error': 'URL NOT FOUND'}, 404))
 
 
-@app.errorhandler(400)
+@routes.errorhandler(400)
 def bad_request():
     """Bad request."""
     return make_response(jsonify({'Error': 'BAD REQUEST'}, 400))
 
 
 '''RAW SQL based queries - BEGIN'''
-@app.route('/module/v01/functions/film_list', methods=['GET'])
+@routes.route('/module/v01/functions/film_list', methods=['GET'])
 def get_film_list():
     try:
         log.debug('inside get_film_list')
@@ -37,7 +44,7 @@ def get_film_list():
     return make_response(response_msg, response_code)
 
 
-@app.route('/module/v01/functions/film_info', methods=['GET'])
+@routes.route('/module/v01/functions/film_info', methods=['GET'])
 def get_film_info():
     try:
         log.debug('inside get_film_info')
@@ -50,7 +57,7 @@ def get_film_info():
     return make_response(response_msg, response_code)
 
 
-@app.route('/module/v01/functions/film_actors', methods=['GET'])
+@routes.route('/module/v01/functions/film_actors', methods=['GET'])
 def get_film_actors():
     try:
         log.debug('inside get_film_actors')
@@ -65,7 +72,7 @@ def get_film_actors():
 '''RAW SQL based queries - END'''
 
 '''ORM Object based queries - BEGIN'''
-@app.route('/module/v01/functions/film_list_orm', methods=['GET'])
+@routes.route('/module/v01/functions/film_list_orm', methods=['GET'])
 def get_film_list_orm():
     try:
         log.debug('inside get_film_list_orm')
@@ -78,7 +85,7 @@ def get_film_list_orm():
         response_msg = jsonify(str(err))
     return make_response(response_msg, response_code)
 
-@app.route('/module/v01/functions/film_info_orm', methods=['GET'])
+@routes.route('/module/v01/functions/film_info_orm', methods=['GET'])
 def get_film_info_orm():
     try:
         log.debug('inside get_film_info_orm')
@@ -91,7 +98,7 @@ def get_film_info_orm():
     return make_response(response_msg, response_code)
 
 
-@app.route('/module/v01/functions/film_actors_orm', methods=['GET'])
+@routes.route('/module/v01/functions/film_actors_orm', methods=['GET'])
 def get_film_actors_orm():
     try:
         log.debug('inside get_film_actors_orm')

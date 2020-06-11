@@ -34,7 +34,7 @@ log.info('__name__: ' + __name__)
 try:
     app = create_app(main_config.run_conf_data['FLASK_CONFIG'])
     if __name__ == "__main__":
-        app.run(host='0.0.0.0')
+        app.run()
 except RuntimeError as err:
     log.error(str(err))
     exit(1)

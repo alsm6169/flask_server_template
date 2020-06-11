@@ -3,7 +3,7 @@ import pandas as pd
 from marshmallow import ValidationError
 import logging
 from flask_server_template import db_obj
-from request_validator import TitleValidator
+from db.request_validator import TitleValidator
 
 log = logging.getLogger('pythonLogger') # This handler comes from config>logger.conf
 

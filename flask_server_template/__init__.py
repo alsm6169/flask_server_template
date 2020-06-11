@@ -1,9 +1,9 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 import logging
 import os
 
-db_obj = SQLAlchemy()
+from db.db_extensions import db_obj
+from flask_routes import routes
 
 log = logging.getLogger('pythonLogger') # This handler comes from config>logger.conf
 # https://flask.palletsprojects.com/en/1.1.x/tutorial/factory/
@@ -25,8 +25,5 @@ def create_app(flask_config=None):
 
     db_obj.init_app(app)
 
-    with app.app_context():
-        # Import routes
-        import flask_routes
-        return app
-
+    app.register_blueprint(routes)
+    return app

@@ -1,31 +1,28 @@
-from sqlalchemy.ext.automap import automap_base
 import psycopg2
 import logging
 import pandas as pd
 from marshmallow import ValidationError
-from sqlalchemy import MetaData
 
-from flask_server_template import db_obj
-from request_validator import TitleValidator
+from db.db_extensions import db_obj, metadata, Base
+# from flask_server_template import db_obj
+from db.request_validator import TitleValidator
 
 log = logging.getLogger('pythonLogger') # This handler comes from config>logger.conf
 
-# https://docs.sqlalchemy.org/en/13/orm/extensions/automap.html
-# https://www.youtube.com/watch?v=UK57IHzSh8I
-# produce our own MetaData object
-metadata = MetaData(bind=db_obj.engine) # here a parameter called schema can be used if we want to reflect only particular db schema
 
-# Optional - BEGIN
-# we can reflect it ourselves from a database, using options
-metadata.reflect(extend_existing=True,autoload_replace=True)
-# such as 'only' to limit what tables we look at...or reflect views also
-# metadata.reflect(only=['film', 'actor'], views=True, extend_existing=True, autoload_replace=True)
-# Optional - END
-
-# we can then produce a set of mappings from this MetaData.
-Base = automap_base(metadata=metadata)
-# calling prepare() just sets up mapped classes and relationships
-Base.prepare(db_obj.engine, reflect=True)
+def orm_init():
+    log.info('Binding metadata and reflecting the database')
+    # IMPORTANT: Before first call to bind metadata to active db engine
+    # see flask_routes.py @routes.before_app_first_request
+    metadata.bind = db_obj.engine
+    # Optional - BEGIN
+    # we can reflect it ourselves from a database, using options
+    # metadata.reflect(extend_existing=True,autoload_replace=True)
+    # such as 'only' to limit what tables we look at...or reflect views also
+    # metadata.reflect(only=['film', 'actor'], views=True, extend_existing=True, autoload_replace=True)
+    # Optional - END
+    # calling prepare() just sets up mapped classes and relationships
+    Base.prepare(db_obj.engine, reflect=True)
 
 def get_all_films():
     try:
