@@ -1,14 +1,11 @@
 from flask import jsonify, make_response, request, Blueprint
-
 import logging
 
 import db.db_extensions
-
-log = logging.getLogger('pythonLogger')  # This handler comes from config>logger.conf
-
-routes = Blueprint('flask_routes',__name__)
 from db import queries_orm, queries_rawsql
 
+log = logging.getLogger('pythonLogger')  # This handler comes from config>logger.conf
+routes = Blueprint('flask_routes',__name__)
 
 @routes.before_app_first_request
 def orm_init():
