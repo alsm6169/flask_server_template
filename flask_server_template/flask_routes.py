@@ -2,7 +2,8 @@ from flask import jsonify, make_response, request, Blueprint
 import logging
 
 import db.db_extensions
-from db import queries_orm, queries_rawsql
+import db.queries_rawsql as qry
+import model.business_model as bm
 
 log = logging.getLogger('pythonLogger')  # This handler comes from config>logger.conf
 routes = Blueprint('flask_routes',__name__)
@@ -27,13 +28,21 @@ def bad_request():
     """Bad request."""
     return make_response(jsonify({'Error': 'BAD REQUEST'}, 400))
 
+@routes.route('/', methods=['GET'])
+@routes.route('/index', methods=['GET'])
+@routes.route('/module/v01/functions', methods=['GET'])
+def get_list_supported_functions():
+    response_code = 200
+    response_msg = jsonify({'Supported URLs' : bm.list_supported_functions})
+    return make_response(response_msg, response_code)
+
 
 '''RAW SQL based queries - BEGIN'''
 @routes.route('/module/v01/functions/film_list', methods=['GET'])
 def get_film_list():
     try:
         log.debug('inside get_film_list')
-        df = queries_rawsql.get_all_films()
+        df = qry.get_all_films()
         response_code = 200
         response_msg = df.to_json(orient='records')
     except RuntimeError as err:
@@ -46,7 +55,7 @@ def get_film_list():
 def get_film_info():
     try:
         log.debug('inside get_film_info')
-        df = queries_rawsql.get_film_info(request)
+        df = qry.get_film_info(request)
         response_code = 200
         response_msg = df.to_json(orient='records')
     except RuntimeError as err:
@@ -59,7 +68,7 @@ def get_film_info():
 def get_film_actors():
     try:
         log.debug('inside get_film_actors')
-        actor_df = queries_rawsql.get_film_actors(request)
+        actor_df = qry.get_film_actors(request)
         response_code = 200
         response_msg = actor_df.to_json(orient='records')
     except RuntimeError as err:
@@ -74,9 +83,9 @@ def get_film_actors():
 def get_film_list_orm():
     try:
         log.debug('inside get_film_list_orm')
-        film_df = queries_orm.get_all_films()
+        film_df = bm.get_all_films()
         response_code = 200
-        response_msg = film_df.to_json(orient='index')
+        response_msg = film_df.to_json(orient='records')
         # response_msg = jsonify({'Status': 'All good!'})
     except RuntimeError as err:
         response_code = 700  # err.flask_server_template
@@ -87,9 +96,9 @@ def get_film_list_orm():
 def get_film_info_orm():
     try:
         log.debug('inside get_film_info_orm')
-        film_df = queries_orm.get_film_info(request)
+        film_df = bm.get_film_info(request)
         response_code = 200
-        response_msg = film_df.to_json(orient='index')
+        response_msg = film_df.to_json(orient='records')
     except RuntimeError as err:
         response_code = 700  # err.flask_server_template
         response_msg = jsonify(str(err))
@@ -100,9 +109,9 @@ def get_film_info_orm():
 def get_film_actors_orm():
     try:
         log.debug('inside get_film_actors_orm')
-        actor_df = queries_orm.get_film_actors(request)
+        actor_df = bm.get_film_actors(request)
         response_code = 200
-        response_msg = actor_df.to_json(orient='index')
+        response_msg = actor_df.to_json(orient='records')
     except RuntimeError as err:
         response_code = 700  # err.flask_server_template
         response_msg = jsonify(str(err))

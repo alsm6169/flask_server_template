@@ -29,12 +29,14 @@ def get_db_con_str():
     #              f'{run_conf_data["DB_NAME"]}'
 
     # with password
-    pwd = os.getenv('DB_PWD')  # get password from environment variable DB_PWD
-    db_con_str = f'postgresql://' \
-                 f'{run_conf_data["DB_USER"]}:' \
-                 f'{pwd}@' \
-                 f'{run_conf_data["DB_SERVER"]}:' \
-                 f'{run_conf_data["DB_PORT"]}/' \
-                 f'{run_conf_data["DB_NAME"]}'
+    # pwd = os.getenv('DB_PWD')  # get password from environment variable DB_PWD
+    # db_con_str = f'postgresql://' \
+    #              f'{run_conf_data["DB_USER"]}:' \
+    #              f'{pwd}@' \
+    #              f'{run_conf_data["DB_SERVER"]}:' \
+    #              f'{run_conf_data["DB_PORT"]}/' \
+    #              f'{run_conf_data["DB_NAME"]}'
+
+    db_con_str = f'sqlite:///db/dvdrental.db'
     os.environ['SQLALCHEMY_DATABASE_URI'] = db_con_str
     return db_con_str
