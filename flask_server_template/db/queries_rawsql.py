@@ -1,9 +1,7 @@
 import psycopg2
 import pandas as pd
-from marshmallow import ValidationError
 import logging
 from flask_server_template import db_obj
-from db.request_validator import TitleValidator
 
 log = logging.getLogger('pythonLogger') # This handler comes from config>logger.conf
 
@@ -21,13 +19,8 @@ def get_all_films():
 
 
 
-def get_film_info(request):
+def get_film_info(title):
     try:
-        title_schema_obj = TitleValidator()
-        title_schema_obj.load(request.args)
-        # verification passed, hence flask_server_template comes here else it would have gone to exception
-        title = request.args['title']
-
         query = '''
         SELECT * FROM film
         WHERE title = %(title)s
@@ -39,18 +32,9 @@ def get_film_info(request):
     except psycopg2.DatabaseError as error:
         log.error(f'get_all_film_df: {error.pgcode}, {error}')
         raise RuntimeError('DB Processing Error: ' + str(error))
-    except ValidationError as error:
-        log.error(f'get_all_film_df: {error}')
-        raise RuntimeError('Invalid Request Parameter: ' + str(error))
 
-
-def get_film_actors(request):
+def get_film_actors(title):
     try:
-        title_schema_obj = TitleValidator()
-        title_schema_obj.load(request.args)
-        # verification passed, hence flask_server_template comes here else it would have gone to exception
-        title = request.args['title']
-
         query = '''
         SELECT a.first_name, a.last_name FROM actor a 
         INNER JOIN film_actor fa on fa.actor_id = a.actor_id 
@@ -63,6 +47,3 @@ def get_film_actors(request):
     except psycopg2.DatabaseError as error:
         log.error(f'get_all_film_df: {error.pgcode}, {error}')
         raise RuntimeError('DB Processing Error: ' + str(error))
-    except ValidationError as error:
-        log.error(f'get_all_film_df: {error}')
-        raise RuntimeError('Invalid Request Parameter: ' + str(error))

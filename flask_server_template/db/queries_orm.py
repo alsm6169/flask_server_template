@@ -1,10 +1,8 @@
 import psycopg2
 import logging
 import pandas as pd
-from marshmallow import ValidationError
 
 from .db_extensions import db_obj, Base
-from .request_validator import TitleValidator
 
 log = logging.getLogger('pythonLogger') # This handler comes from config>logger.conf
 
@@ -24,12 +22,8 @@ def get_all_films():
         raise RuntimeError('DB Processing Error: ' + str(error))
 
 
-def get_film_info(request):
+def get_film_info(title):
     try:
-        title_schema_obj = TitleValidator()
-        title_schema_obj.load(request.args)
-        # verification passed, hence flask_server_template comes here else it would have gone to exception
-        title = request.args['title']
         film_orm = Base.classes.film
         qry = db_obj.session.query(film_orm).\
             filter(film_orm.title == title)
@@ -39,18 +33,10 @@ def get_film_info(request):
     except psycopg2.DatabaseError as error:
         log.error(f'get_all_film_df: {error.pgcode}, {error}')
         raise RuntimeError('DB Processing Error: ' + str(error))
-    except ValidationError as error:
-        log.error(f'get_all_film_df: {error}')
-        raise RuntimeError('Invalid Request Parameter: ' + str(error))
 
 
-def get_film_actors(request):
+def get_film_actors(title):
     try:
-        title_schema_obj = TitleValidator()
-        title_schema_obj.load(request.args)
-        # verification passed, hence flask_server_template comes here else it would have gone to exception
-        title = request.args['title']
-        log.debug('title: ' + title)
         film_orm = Base.classes.film
         actor_orm = Base.classes.actor
         film_actor_orm = Base.classes.film_actor
@@ -65,6 +51,3 @@ def get_film_actors(request):
     except psycopg2.DatabaseError as error:
         log.error(f'get_all_film_df: {error.pgcode}, {error}')
         raise RuntimeError('DB Processing Error: ' + str(error))
-    except ValidationError as error:
-        log.error(f'get_all_film_df: {error}')
-        raise RuntimeError('Invalid Request Parameter: ' + str(error))

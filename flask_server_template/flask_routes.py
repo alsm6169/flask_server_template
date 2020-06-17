@@ -3,6 +3,7 @@ import logging
 
 import db.db_extensions
 import db.queries_rawsql as qry
+import db.queries_orm as orm
 import model.business_model as bm
 
 log = logging.getLogger('pythonLogger')  # This handler comes from config>logger.conf
@@ -42,6 +43,7 @@ def get_list_supported_functions():
 def get_film_list():
     try:
         log.debug('inside get_film_list')
+        # get your data in pandas data frame format
         df = qry.get_all_films()
         response_code = 200
         response_msg = df.to_json(orient='records')
@@ -55,7 +57,7 @@ def get_film_list():
 def get_film_info():
     try:
         log.debug('inside get_film_info')
-        df = qry.get_film_info(request)
+        df = bm.get_film_info_sql(request)
         response_code = 200
         response_msg = df.to_json(orient='records')
     except RuntimeError as err:
@@ -68,7 +70,7 @@ def get_film_info():
 def get_film_actors():
     try:
         log.debug('inside get_film_actors')
-        actor_df = qry.get_film_actors(request)
+        actor_df = bm.get_film_actors_sql(request)
         response_code = 200
         response_msg = actor_df.to_json(orient='records')
     except RuntimeError as err:
@@ -77,13 +79,16 @@ def get_film_actors():
     return make_response(response_msg, response_code)
 
 '''RAW SQL based queries - END'''
+'''
 
+
+'''
 '''ORM Object based queries - BEGIN'''
 @routes.route('/module/v01/functions/film_list_orm', methods=['GET'])
 def get_film_list_orm():
     try:
         log.debug('inside get_film_list_orm')
-        film_df = bm.get_all_films()
+        film_df = orm.get_all_films()
         response_code = 200
         response_msg = film_df.to_json(orient='records')
         # response_msg = jsonify({'Status': 'All good!'})
@@ -96,7 +101,7 @@ def get_film_list_orm():
 def get_film_info_orm():
     try:
         log.debug('inside get_film_info_orm')
-        film_df = bm.get_film_info(request)
+        film_df = bm.get_film_info_orm(request)
         response_code = 200
         response_msg = film_df.to_json(orient='records')
     except RuntimeError as err:
@@ -109,7 +114,7 @@ def get_film_info_orm():
 def get_film_actors_orm():
     try:
         log.debug('inside get_film_actors_orm')
-        actor_df = bm.get_film_actors(request)
+        actor_df = bm.get_film_actors_orm(request)
         response_code = 200
         response_msg = actor_df.to_json(orient='records')
     except RuntimeError as err:
