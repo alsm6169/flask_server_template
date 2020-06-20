@@ -18,8 +18,10 @@ def set_run_config_map(run_config_file):
 
 
 def get_db_con_str():
-    # Example: 'postgresql://scott:tiger@localhost:5432/mydatabase'
 
+    '''POSTGRESQL - BEGIN'''
+
+    # Example: 'postgresql://scott:tiger@localhost:5432/mydatabase'
     # without password
     # db_con_str = f'postgresql://' \
     #              f'{run_conf_data["DB_USER"]}' \
@@ -36,7 +38,11 @@ def get_db_con_str():
     #              f'{run_conf_data["DB_SERVER"]}:' \
     #              f'{run_conf_data["DB_PORT"]}/' \
     #              f'{run_conf_data["DB_NAME"]}'
+    '''POSTGRESQL - END'''
 
+    '''SQLITE - BEGIN'''
     db_con_str = f'sqlite:///db/dvdrental.db'
+    '''SQLITE - END'''
+
     os.environ['SQLALCHEMY_DATABASE_URI'] = db_con_str
     return db_con_str

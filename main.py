@@ -1,5 +1,7 @@
 import platform
 import sys
+sys.path.append('./flask_server_template') # need this before anything else we get ModuleNotFoundError
+
 from pathlib import Path
 import logging.config
 
@@ -23,12 +25,13 @@ if main_config.set_run_config_map(run_config_file) == 1:
     exit(1)
 db_con_str = main_config.get_db_con_str()
 
+
 # initialize the logger
 logging.config.fileConfig(main_config.run_conf_data['LOGGER_CONFIG'])
 log = logging.getLogger('pythonLogger') # This handler comes from config>logger.conf
 log.debug('sys.version: ' + sys.version)
 log.info('__name__: ' + __name__)
-
+log.info('sys.path: ' + str(sys.path))
 # Flask Code - BEGIN
 """App entry point."""
 try:
